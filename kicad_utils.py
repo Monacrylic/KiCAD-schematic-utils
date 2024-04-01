@@ -174,6 +174,36 @@ def extract_property_value(subsection, property_name):
     value_end = subsection.find('"', value_start + 1)
     return subsection[value_start + 1:value_end]
 
+# count number of pins in a symbol
+def count_pins_in_symbol(lib_id):
+    """
+    Count the number of pins in a symbol based on the given lib_id.
+
+    Parameters:
+        lib_id (str): The lib_id of the symbol.
+
+    Returns:
+        int: The number of pins in the symbol.
+    """
+    lib_name = lib_id.split(":")[0]  # Eg: Device
+    symbol_name = lib_id.split(":")[1]  # Eg: Battery_Cell
+    # Import Library Symbols Definitions
+    # This file is the reference which defines the properties of each component
+    path_to_lib_kicad_sym_file = f"{PATH_TO_SYMBOL_LIBRARY}{lib_name}.kicad_sym"
+
+    # Read the symbol definition from the device file
+    with open(path_to_lib_kicad_sym_file, 'r') as file:
+        lib_file_content = file.read()
+
+    subsection = extract_subsection(
+        lib_file_content, f'(symbol "{symbol_name}"')
+    if subsection is not None:
+        symbol_def_string = subsection[2]
+        pin_count = symbol_def_string.count("(pin ")
+        return pin_count
+    else:
+        raise Exception(
+            f"Symbol {symbol_name} not found in {path_to_lib_kicad_sym_file}")
 
 def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
     # if symbol for component is not lib_symbol, add it
@@ -230,7 +260,7 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
         (fields_autoplaced yes)
         (uuid "{uuid.uuid4()}")
         (property "Reference" "{component_dict["reference_name"]}"
-            (at {component_dict["x"]} {component_dict["y"]} 0)
+            (at {component_dict["x"]} {component_dict["y"]} {component_dict["angle"]})
             (effects
                 (font
                     (size 1.27 1.27)
@@ -238,7 +268,7 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
             )
         )
         (property "Value" "{property_value}"
-            (at {component_dict["x"]} {component_dict["y"]} 0)
+            (at {component_dict["x"]} {component_dict["y"]} {component_dict["angle"]})
             (effects
                 (font
                     (size 1.27 1.27)
@@ -246,7 +276,7 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
             )
         )
         (property "Footprint" ""
-            (at {component_dict["x"]} {component_dict["y"]} 0)
+            (at {component_dict["x"]} {component_dict["y"]} {component_dict["angle"]})
             (effects
                 (font
                     (size 1.27 1.27)

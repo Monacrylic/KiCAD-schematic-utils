@@ -246,6 +246,12 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
     # get symbol description from lib_symbols
     property_value = extract_property_value(symbol_section[2], "Value")
 
+    # create a pin list for the symbol
+    pin_count = symbol_section[2].count("(pin ")
+    pin_uuid_list = ""
+    for i in range(pin_count): 
+        pin_uuid_list+=(f"(pin \"{i}\" (uuid {uuid.uuid4()})) \n")
+
     # TODO: set "at" of each property value = parsed_x + lib_symbol_property_x
     # Currently adding 2 pins to all components. TODO: Check lib-symbols for number of pins and add accordingly.
     symbol_instance = f"""
@@ -302,8 +308,9 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
                 (hide yes)
             )
         )
-        (pin "1"  (uuid {uuid.uuid4()}))
-        (pin "2"  (uuid {uuid.uuid4()}))
+        
+        {pin_uuid_list}
+
         (instances
             (project "temp_{uuid_value}"
                 (path "/{uuid_value}"

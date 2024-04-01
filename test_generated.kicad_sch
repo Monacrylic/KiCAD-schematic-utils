@@ -2,7 +2,7 @@
     (version 20231120)
     (generator "SidYifanOmarNeel")
     (generator_version "8.0")
-    (uuid "cc0b0b4a-7252-4a21-a5ec-b601d08cf77d")
+    (uuid "add89b9b-6e38-4534-ad29-1831c5c71fb9")
     (paper "A4")
     (lib_symbols
  (symbol "Device:R"
@@ -138,7 +138,7 @@
         (on_board yes)
         (dnp no)
         (fields_autoplaced yes)
-        (uuid "40c86e76-7063-409f-a61a-f906c8a353f6")
+        (uuid "9f83ded3-bd24-4257-bf42-4c78d161f2b1")
         (property "Reference" "R1"
             (at 133.35 64.77 0)
             (effects
@@ -182,11 +182,14 @@
                 (hide yes)
             )
         )
-        (pin "1"  (uuid 851eb412-d2fa-447c-b8f3-005ba460c87c))
-        (pin "2"  (uuid 36b95f67-c078-4be2-9212-9632b98e310d))
+        
+        (pin "0" (uuid 46a46ad4-b830-4765-ba07-ad379f2dc0f0)) 
+(pin "1" (uuid 29b26c85-45ad-4be5-ac4f-c786def1b908)) 
+
+        
         (instances
-            (project "temp_cc0b0b4a-7252-4a21-a5ec-b601d08cf77d"
-                (path "/cc0b0b4a-7252-4a21-a5ec-b601d08cf77d"
+            (project "temp_add89b9b-6e38-4534-ad29-1831c5c71fb9"
+                (path "/add89b9b-6e38-4534-ad29-1831c5c71fb9"
                     (reference "R1")
                     (unit 1)
                 )

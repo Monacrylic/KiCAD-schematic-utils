@@ -56,13 +56,6 @@ PATH_TO_SYMBOL_LIBRARY = os.path.expanduser(config['symbol_library_path'])
 
 
 def create_empty_kicad_sch_template():
-    """
-    Create an empty KiCad schematic template.
-
-    Returns:
-    str: The empty KiCad schematic template.
-    """
-
     file_uuid = f"{uuid.uuid4()}"
     template = f"""(kicad_sch
     (version 20231120)
@@ -177,24 +170,12 @@ def extract_property_value(subsection, property_name):
         return None  # Property not found
 
     value_start = subsection.find(
-        '"', property_start + len(f'(property "{property_name}"')) + 1
+        '"', property_start + len(f'(property "{property_name}"'))
     value_end = subsection.find('"', value_start + 1)
     return subsection[value_start + 1:value_end]
 
 
 def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
-    """
-    Add a component to a KiCad schematic file.
-
-    Parameters:
-        kicad_sch_file (str): The content of the KiCad schematic file.
-        component_dict (dict): A dictionary representing the component to be added to the schematic.
-            The dictionary should contain the keys 'lib_id', 'x', 'y', 'angle', and 'reference_name'.
-            Example: {"lib_id": "Device:Ammeter_AC", "x": 133.35, "y": 64.77, "angle": 0, "reference_name": "BT1"}
-    
-    Returns:
-        str: The modified KiCad schematic file content.
-    """ 
     # if symbol for component is not lib_symbol, add it
     libSymbols = extract_subsection(kicad_sch_file, '(lib_symbols')
     if libSymbols[2].find(f'component_dict["lib_id"]"') == -1:
@@ -205,6 +186,7 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
 
     # add symbol string
     curr_lib_id = component_dict["lib_id"]
+    
     # lib_name = component_dict["lib_id"].split(":")[0] #Eg: Device
     # symbol_name = component_dict["lib_id"].split(":")[1] #Eg: Battery_Cell
 
@@ -273,7 +255,7 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
             )
         )
         (property "Datasheet" "~"
-            (at {component_dict["x"]} {component_dict["y"]} 0)
+            (at 0 0 0)
             (effects
                 (font
                     (size 1.27 1.27)
@@ -282,7 +264,7 @@ def add_component_to_kicad_sch_file(kicad_sch_file, component_dict):
             )
         )
         (property "Description" "{description}"
-            (at {component_dict["x"]} {component_dict["y"]} 0)
+            (at 0 0 0)
             (effects
                 (font
                     (size 1.27 1.27)
